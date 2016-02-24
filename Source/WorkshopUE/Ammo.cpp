@@ -32,3 +32,7 @@ void AAmmo::setAmount(int32 new_amount) {
 		amount = new_amount;
 	}
 }
+
+int32 AAmmo::getAmount() {
+	return amount;
+}

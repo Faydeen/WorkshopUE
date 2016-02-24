@@ -20,8 +20,11 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Ammo")
 	void setAmount(int32 new_amount);
-	FORCEINLINE int32 getAmount() { return amount; }
+	
+	UFUNCTION(BlueprintCallable, Category = "Ammo")
+	int32 getAmount();
 	
 protected :
 	int32 amount;
