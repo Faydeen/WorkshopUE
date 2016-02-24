@@ -31,11 +31,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Ammo")
 	void setAmount(int32 new_amount);
-<<<<<<< HEAD
-=======
 	
 	UFUNCTION(BlueprintCallable, Category = "Ammo")
->>>>>>> 0b72f8079d707ce9b4b04a169fa38d6552e71629
 	int32 getAmount();
 	
 protected :

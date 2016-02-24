@@ -1,7 +1,6 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #pragma once
 #include "GameFramework/Character.h"
-#include "Ammo.h"
 #include "WorkshopUECharacter.generated.h"
 
 class UInputComponent;
@@ -112,7 +111,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
 	int32 ammo_blue;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
-	int32 ammo_red;
+	int32 ammo_black;
 	
 
 private:
