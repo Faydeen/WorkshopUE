@@ -5,8 +5,10 @@
 #include "WorkshopUEProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "GameFramework/InputSettings.h"
-
+#define TRACE_DISTANCE 10000
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
+
+
 
 //////////////////////////////////////////////////////////////////////////
 // AWorkshopUECharacter
@@ -95,6 +97,8 @@ void AWorkshopUECharacter::OnFire()
 		// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
 		const FVector SpawnLocation = GetActorLocation() + SpawnRotation.RotateVector(GunOffset);
 
+		FVector direction = getAimDir();
+
 		UWorld* const World = GetWorld();
 		
 		if (World != NULL)
@@ -120,7 +124,7 @@ void AWorkshopUECharacter::OnFire()
 			}
 
 			if (canShoot == true) {
-			AWorkshopUEProjectile* ball = World->SpawnActor<AWorkshopUEProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
+				World->SpawnActor<AWorkshopUEProjectile>(ProjectileClass, FP_Gun->GetSocketLocation("Muzzle"), direction.Rotation());
 			}
 		}
 	}
@@ -258,4 +262,59 @@ void AWorkshopUECharacter::InitVariables()
 {
 	//Ammos = new AAmmo[(long)EAmmoType::VE_LastValue];
 
+}
+
+
+FVector AWorkshopUECharacter::getAimDir() const
+{
+	FVector FinalAimedDir = FVector::ZeroVector;
+	FVector AimedPoint = getAimedPoint();
+
+	if (AimedPoint != FVector::ZeroVector)
+	{
+		const FVector StartTrace = FP_Gun->GetSocketLocation("Muzzle");
+		FinalAimedDir = AimedPoint - StartTrace;
+	}
+
+	return FinalAimedDir;
+}
+
+FVector AWorkshopUECharacter::getAimedPoint() const
+{
+	FVector FinalAimedPoint = FVector::ZeroVector;
+	//	APlayerController* const PlayerController = Instigator ? Cast<APlayerController>(Instigator->Controller) : NULL;
+	//UCameraComponent* const CameraComp = Instigator ? Cast<UCameraComponent>(MyPawn->getFirstPersonCameraComp()) : NULL;
+	UCameraComponent* CameraComp = FirstPersonCameraComponent;
+
+	if (CameraComp)
+	{
+		FVector CamLoc;
+		FVector CamDir;
+		FTransform CamTrans = CameraComp->GetComponentTransform();
+
+		CamLoc = CamTrans.GetLocation();
+		CamDir = CameraComp->GetForwardVector();
+
+
+		const FHitResult Impact = WeaponTrace(CamLoc, CamLoc + CamDir * TRACE_DISTANCE);
+
+		FinalAimedPoint = Impact.GetActor() ? Impact.ImpactPoint : Impact.TraceEnd;
+	}
+	return FinalAimedPoint;
+}
+
+FHitResult AWorkshopUECharacter::WeaponTrace(const FVector &TraceFrom, const FVector &TraceTo) const
+{
+	static FName WeaponFireTag = FName(TEXT("WeaponTrace"));
+
+	FCollisionQueryParams TraceParams(WeaponFireTag, true, Instigator);
+	TraceParams.bTraceAsyncScene = true;
+	TraceParams.bReturnPhysicalMaterial = true;
+	TraceParams.AddIgnoredActor(this);
+
+	FHitResult Hit(ForceInit);
+
+	GetWorld()->LineTraceSingleByChannel(Hit, TraceFrom, TraceTo, ECC_GameTraceChannel1, TraceParams);
+
+	return Hit;
 }

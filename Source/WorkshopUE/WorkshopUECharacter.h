@@ -5,8 +5,6 @@
 
 class UInputComponent;
 
-
-
 UCLASS(config=Game)
 class AWorkshopUECharacter : public ACharacter
 {
@@ -115,9 +113,15 @@ public:
 	int32 ammo_black;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
 	int32 wpnSelector;
+	
+	UFUNCTION(BlueprintCallable, Category ="Shoot")
+	FVector getAimDir() const;
 
 private:
 	
 	void InitVariables();
+
+	FVector getAimedPoint() const;
+	FHitResult WeaponTrace(const FVector &TraceFrom, const FVector &TraceTo) const;
 };
 

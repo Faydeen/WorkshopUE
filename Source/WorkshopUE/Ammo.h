@@ -5,14 +5,6 @@
 #include "GameFramework/Actor.h"
 #include "Ammo.generated.h"
 
-UENUM(BlueprintType)
-enum class EAmmoType : uint8
-{
-	VE_Blue	UMETA(DisplayName = "Blue"),
-	VE_Red	UMETA(DisplayName = "Red"),
-	VE_LastValue UMETA(DisplayName = "YOLO")
-};
-
 UCLASS()
 class WORKSHOPUE_API AAmmo : public AActor
 {
@@ -21,7 +13,6 @@ class WORKSHOPUE_API AAmmo : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AAmmo();
-	AAmmo(EAmmoType type);
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -29,13 +20,5 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	UFUNCTION(BlueprintCallable, Category = "Ammo")
-	void setAmount(int32 new_amount);
-	
-	UFUNCTION(BlueprintCallable, Category = "Ammo")
-	int32 getAmount();
-	
-protected :
-	int32 amount;
-	EAmmoType ammo_type;
+
 };
