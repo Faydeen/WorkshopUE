@@ -46,6 +46,9 @@ AWorkshopUECharacter::AWorkshopUECharacter()
 
 	// Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P are set in the
 	// derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
+
+	InitVariables();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -218,6 +221,6 @@ bool AWorkshopUECharacter::EnableTouchscreenMovement(class UInputComponent* Inpu
 
 void AWorkshopUECharacter::InitVariables()
 {
-	Ammos = new AAmmo[(long)EAmmoType::VE_LastValue];
+	//Ammos = new AAmmo[(long)EAmmoType::VE_LastValue];
 
 }
