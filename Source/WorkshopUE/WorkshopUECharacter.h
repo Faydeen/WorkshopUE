@@ -106,9 +106,6 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
-
-
-
 	/*CE QU'ON AJOUTE !!!!*/
 public:
 

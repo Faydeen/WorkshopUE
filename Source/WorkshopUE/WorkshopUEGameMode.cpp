@@ -13,5 +13,6 @@ AWorkshopUEGameMode::AWorkshopUEGameMode()
 	DefaultPawnClass = PlayerPawnClassFinder.Class;
 
 	// use our custom HUD class
-	HUDClass = AWorkshopUEHUD::StaticClass();
+	static ConstructorHelpers::FClassFinder <AWorkshopUEHUD> MyDefaultHUD(TEXT("/Game/Blueprints/BP_HUD"));
+	HUDClass = (UClass*)MyDefaultHUD.Class;
 }
