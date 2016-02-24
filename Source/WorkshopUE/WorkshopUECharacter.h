@@ -118,8 +118,8 @@ public:
 	/*CE QU'ON AJOUTE !!!!*/
 public:
 
-	UPROPERTY(EditAnywhere, Category = "Ammo")
-	AAmmo* Ammos;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Ammo")
+	TArray<AAmmo*> Ammos;
 
 private:
 
