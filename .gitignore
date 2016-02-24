@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 # Windows image file caches
 Thumbs.db
@@ -44,6 +45,8 @@ Temporary Items
 .apdisk
 =======
 >>>>>>> 31bfccb221a0af6d3a0823bfc7944e0e6b380a4e
+=======
+>>>>>>> 9b36bcd42797b2866d80b0f066408b8422a565ad
 # Compiled Object files
 *.slo
 *.lo
@@ -104,4 +107,3 @@ Intermediate/*
 DerivedDataCache/*
 
 *.uproject
-*.opendb

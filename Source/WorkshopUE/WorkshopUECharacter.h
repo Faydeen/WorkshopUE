@@ -1,9 +1,18 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #pragma once
 #include "GameFramework/Character.h"
+#include "Ammo.h"
 #include "WorkshopUECharacter.generated.h"
 
 class UInputComponent;
+
+UENUM(BlueprintType)
+enum class EAmmoType : uint8
+{
+	VE_Blue	UMETA(DisplayName = "Blue"),
+	VE_Red	UMETA(DisplayName = "Red"),
+	VE_LastValue UMETA(DisplayName = "YOLO")
+};
 
 UCLASS(config=Game)
 class AWorkshopUECharacter : public ACharacter
@@ -103,5 +112,14 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	/*CE QU'ON AJOUTE !!!!*/
+public:
+
+	UPROPERTY(EditAnywhere, Category = "Ammo")
+	AAmmo* Ammos;
+
+private:
+
+	void InitVariables();
 };
 

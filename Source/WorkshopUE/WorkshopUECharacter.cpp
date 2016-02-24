@@ -215,3 +215,9 @@ bool AWorkshopUECharacter::EnableTouchscreenMovement(class UInputComponent* Inpu
 	}
 	return bResult;
 }
+
+void AWorkshopUECharacter::InitVariables()
+{
+	Ammos = new AAmmo[(long)EAmmoType::VE_LastValue];
+
+}
