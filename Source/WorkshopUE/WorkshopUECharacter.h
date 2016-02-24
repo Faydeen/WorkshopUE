@@ -6,13 +6,7 @@
 
 class UInputComponent;
 
-UENUM(BlueprintType)
-enum class EAmmoType : uint8
-{
-	VE_Blue	UMETA(DisplayName = "Blue"),
-	VE_Red	UMETA(DisplayName = "Red"),
-	VE_LastValue UMETA(DisplayName = "YOLO")
-};
+
 
 UCLASS(config=Game)
 class AWorkshopUECharacter : public ACharacter
@@ -118,8 +112,11 @@ public:
 	/*CE QU'ON AJOUTE !!!!*/
 public:
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Ammo")
-	TArray<AAmmo*> Ammos;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+	int32 ammo_blue;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+	int32 ammo_red;
+	
 
 private:
 
