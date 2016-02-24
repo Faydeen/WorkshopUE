@@ -54,7 +54,8 @@ protected:
 	
 	/** Fires a projectile. */
 	void OnFire();
-
+	void Sel_Wpn_0();
+	void Sel_Wpn_1();
 	/** Handles moving forward/backward */
 	void MoveForward(float Val);
 
@@ -112,10 +113,11 @@ public:
 	int32 ammo_blue;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
 	int32 ammo_black;
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+	int32 wpnSelector;
 
 private:
-
+	
 	void InitVariables();
 };
 

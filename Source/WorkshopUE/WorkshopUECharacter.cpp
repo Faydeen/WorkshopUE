@@ -61,16 +61,18 @@ void AWorkshopUECharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
 
 	InputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	InputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
-	
+	InputComponent->BindAction("Wpn_0", IE_Pressed, this, &AWorkshopUECharacter::Sel_Wpn_0);
+	InputComponent->BindAction("Wpn_1", IE_Pressed, this, &AWorkshopUECharacter::Sel_Wpn_1);
+
 	//InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &AWorkshopUECharacter::TouchStarted);
-	if( EnableTouchscreenMovement(InputComponent) == false )
+	if (EnableTouchscreenMovement(InputComponent) == false)
 	{
 		InputComponent->BindAction("Fire", IE_Pressed, this, &AWorkshopUECharacter::OnFire);
 	}
-	
+
 	InputComponent->BindAxis("MoveForward", this, &AWorkshopUECharacter::MoveForward);
 	InputComponent->BindAxis("MoveRight", this, &AWorkshopUECharacter::MoveRight);
-	
+
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
 	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
@@ -78,10 +80,14 @@ void AWorkshopUECharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
 	InputComponent->BindAxis("TurnRate", this, &AWorkshopUECharacter::TurnAtRate);
 	InputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	InputComponent->BindAxis("LookUpRate", this, &AWorkshopUECharacter::LookUpAtRate);
+
+
+	
 }
 
 void AWorkshopUECharacter::OnFire()
-{ 
+{
+	bool canShoot = false;
 	// try and fire a projectile
 	if (ProjectileClass != NULL)
 	{
@@ -90,35 +96,63 @@ void AWorkshopUECharacter::OnFire()
 		const FVector SpawnLocation = GetActorLocation() + SpawnRotation.RotateVector(GunOffset);
 
 		UWorld* const World = GetWorld();
+		
 		if (World != NULL)
 		{
 			// spawn the projectile at the muzzle
-			World->SpawnActor<AWorkshopUEProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
+			switch (wpnSelector)
+			{
+			case 0:
+				if (ammo_blue > 0) {
+					ammo_blue--;
+					canShoot = true;
+
+				}
+				break;
+			case 1:
+				if (ammo_black > 0) {
+					ammo_black--;
+					canShoot = true;
+				}
+				break;
+			default:
+				break;
+			}
+
+			if (canShoot == true) {
+			AWorkshopUEProjectile* ball = World->SpawnActor<AWorkshopUEProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
+			}
 		}
 	}
 
 	// try and play the sound if specified
-	if (FireSound != NULL)
-	{
-		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
-	}
-
-	// try and play a firing animation if specified
-	if(FireAnimation != NULL)
-	{
-		// Get the animation object for the arms mesh
-		UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
-		if(AnimInstance != NULL)
+	if(canShoot==true){
+		if (FireSound != NULL)
 		{
-			AnimInstance->Montage_Play(FireAnimation, 1.f);
+			UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
+		}
+
+		// try and play a firing animation if specified
+		if (FireAnimation != NULL)
+		{
+			// Get the animation object for the arms mesh
+			UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+			if (AnimInstance != NULL)
+			{
+				AnimInstance->Montage_Play(FireAnimation, 1.f);
+			}
 		}
 	}
 
 }
 
+void AWorkshopUECharacter::Sel_Wpn_0() { wpnSelector = 0; }
+
+void AWorkshopUECharacter::Sel_Wpn_1() { wpnSelector = 1; }
+
 void AWorkshopUECharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
 {
-	if( TouchItem.bIsPressed == true )
+	if (TouchItem.bIsPressed == true)
 	{
 		return;
 	}
@@ -134,7 +168,7 @@ void AWorkshopUECharacter::EndTouch(const ETouchIndex::Type FingerIndex, const F
 	{
 		return;
 	}
-	if( ( FingerIndex == TouchItem.FingerIndex ) && (TouchItem.bMoved == false) )
+	if ((FingerIndex == TouchItem.FingerIndex) && (TouchItem.bMoved == false))
 	{
 		OnFire();
 	}
@@ -143,7 +177,7 @@ void AWorkshopUECharacter::EndTouch(const ETouchIndex::Type FingerIndex, const F
 
 void AWorkshopUECharacter::TouchUpdate(const ETouchIndex::Type FingerIndex, const FVector Location)
 {
-	if ((TouchItem.bIsPressed == true) && ( TouchItem.FingerIndex==FingerIndex))
+	if ((TouchItem.bIsPressed == true) && (TouchItem.FingerIndex == FingerIndex))
 	{
 		if (TouchItem.bIsPressed)
 		{
@@ -155,7 +189,7 @@ void AWorkshopUECharacter::TouchUpdate(const ETouchIndex::Type FingerIndex, cons
 					FVector MoveDelta = Location - TouchItem.Location;
 					FVector2D ScreenSize;
 					ViewportClient->GetViewportSize(ScreenSize);
-					FVector2D ScaledDelta = FVector2D( MoveDelta.X, MoveDelta.Y) / ScreenSize;									
+					FVector2D ScaledDelta = FVector2D(MoveDelta.X, MoveDelta.Y) / ScreenSize;
 					if (ScaledDelta.X != 0.0f)
 					{
 						TouchItem.bMoved = true;
@@ -209,7 +243,7 @@ void AWorkshopUECharacter::LookUpAtRate(float Rate)
 bool AWorkshopUECharacter::EnableTouchscreenMovement(class UInputComponent* InputComponent)
 {
 	bool bResult = false;
-	if(FPlatformMisc::GetUseVirtualJoysticks() || GetDefault<UInputSettings>()->bUseMouseForTouch )
+	if (FPlatformMisc::GetUseVirtualJoysticks() || GetDefault<UInputSettings>()->bUseMouseForTouch)
 	{
 		bResult = true;
 		InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &AWorkshopUECharacter::BeginTouch);
