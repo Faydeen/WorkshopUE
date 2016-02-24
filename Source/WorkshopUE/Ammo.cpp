@@ -7,8 +7,8 @@
 // Sets default values
 AAmmo::AAmmo()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false ;
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = false;
 	amount = 0;
 }
 
@@ -16,13 +16,13 @@ AAmmo::AAmmo()
 void AAmmo::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
-void AAmmo::Tick( float DeltaTime )
+void AAmmo::Tick(float DeltaTime)
 {
-	Super::Tick( DeltaTime );
+	Super::Tick(DeltaTime);
 
 }
 

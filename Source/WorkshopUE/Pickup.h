@@ -9,16 +9,16 @@ UCLASS()
 class WORKSHOPUE_API APickup : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	APickup();
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+
 	// Called every frame
-	virtual void Tick( float DeltaSeconds ) override;
+	virtual void Tick(float DeltaSeconds) override;
 
 
 	//OUR CODE
@@ -38,10 +38,16 @@ public:
 		void WasCollected();
 	virtual void WasCollected_Implementation();
 
+	// Collection sphere
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	class USphereComponent* CollectionSphere;
+	FORCEINLINE class USphereComponent* GetCollectionSphere() const { return CollectionSphere; }
+
 
 protected:
 	/**True when the pickup can be used, and false when pickup is deactivated */
 	bool bIsActive;
+
 
 private:
 	/** Static mesh to represent the pickup in the level*/
