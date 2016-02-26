@@ -12,7 +12,17 @@ AWorkshopUEGameMode::AWorkshopUEGameMode()
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/FirstPersonCPP/Blueprints/FirstPersonCharacter"));
 	DefaultPawnClass = PlayerPawnClassFinder.Class;
 
+	bLoading = false;
+
 	// use our custom HUD class
 	static ConstructorHelpers::FClassFinder <AWorkshopUEHUD> MyDefaultHUD(TEXT("/Game/Blueprints/BP_HUD"));
 	HUDClass = (UClass*)MyDefaultHUD.Class;
+}
+
+
+void AWorkshopUEGameMode::ChangeLevel(FName NextLevel) {
+
+	nNextLevel = NextLevel;
+	bLoading = true;
+
 }

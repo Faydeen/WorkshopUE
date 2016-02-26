@@ -10,6 +10,15 @@ class AWorkshopUEGameMode : public AGameMode
 
 public:
 	AWorkshopUEGameMode();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
+		bool bLoading;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
+		FName nNextLevel;
+
+	UFUNCTION(BlueprintCallable, Category = "HUD")
+		void ChangeLevel(FName NextLevel);
 };
 
 
